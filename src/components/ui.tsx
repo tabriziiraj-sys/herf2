@@ -1,167 +1,104 @@
-import React, { useEffect, useRef, useState } from "react";
-import { fa } from "../lib/data";
-import {
-  IconCell,
-  IconDash,
-  IconCode,
-  IconChart,
-  IconFunnel,
-  IconBot,
-  IconLock,
-  IconCert,
-  IconPlay,
-  IconSpark,
-  IconCap,
-  IconGlobe,
-  IconInstagram,
-  IconTelegram,
-  IconEitaa,
-  IconYoutube,
-  IconSigma,
-} from "./icons";
+import type { ReactNode } from "react";
+import { useInView } from "../lib/hooks";
 
-/* ---------- icon lookup ---------- */
-export const iconMap: Record<string, (p: { className?: string }) => React.ReactElement> = {
-  cell: IconCell,
-  dash: IconDash,
-  code: IconCode,
-  chart: IconChart,
-  funnel: IconFunnel,
-  bot: IconBot,
-  lock: IconLock,
-  cert: IconCert,
-  play: IconPlay,
-  spark: IconSpark,
-  cap: IconCap,
-  globe: IconGlobe,
-  instagram: IconInstagram,
-  telegram: IconTelegram,
-  eitaa: IconEitaa,
-  youtube: IconYoutube,
-  sigma: IconSigma,
-};
-
-/* ---------- scroll reveal ---------- */
+/** نمایش تدریجی هنگام اسکرول */
 export function Reveal({
   children,
-  className = "",
   delay = 0,
-  as: Tag = "div",
+  className = "",
 }: {
-  children: React.ReactNode;
-  className?: string;
+  children: ReactNode;
   delay?: number;
-  as?: "div" | "section" | "article" | "li" | "figure";
+  className?: string;
 }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ref = useRef<any>(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            io.disconnect();
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
+  const { ref, inView } = useInView<HTMLDivElement>(0.12);
   return (
-    <Tag
+    <div
       ref={ref}
-      className={`reveal ${inView ? "is-in" : ""} ${className}`}
-      style={{ ["--rd" as string]: `${delay}ms` }}
+      className={`reveal ${inView ? "reveal-in" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
-    </Tag>
+    </div>
   );
 }
 
-/* ---------- count up ---------- */
-export function CountUp({
-  to,
-  decimals = 0,
-  suffix = "",
-  duration = 1600,
-  className = "",
+/** سرتیتر بخش‌ها با مرجع سلولی اکسلی */
+export function SectionHead({
+  cell,
+  kicker,
+  title,
+  desc,
+  dark = false,
 }: {
-  to: number;
-  decimals?: number;
-  suffix?: string;
-  duration?: number;
-  className?: string;
+  cell: string;
+  kicker: string;
+  title: string;
+  desc?: string;
+  dark?: boolean;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [val, setVal] = useState(0);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !started.current) {
-          started.current = true;
-          const t0 = performance.now();
-          const tick = (t: number) => {
-            const p = Math.min(1, (t - t0) / duration);
-            const eased = 1 - Math.pow(1 - p, 3);
-            setVal(to * eased);
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [to, duration]);
-
-  const shown =
-    decimals > 0
-      ? fa(val.toFixed(decimals))
-      : fa(Math.round(val).toLocaleString("en-US"));
-
   return (
-    <span ref={ref} className={className} dir="ltr">
-      {shown}
-      {suffix}
+    <div className="max-w-3xl">
+      <Reveal>
+        <div className="flex items-center gap-3">
+          <span
+            className={`inline-flex h-9 min-w-9 items-center justify-center border px-2 font-mono text-xs font-semibold tracking-wide ${
+              dark ? "border-inkline bg-ink-800 text-leaf-3" : "border-leaf/40 bg-mint text-leaf"
+            }`}
+            dir="ltr"
+          >
+            {cell}
+          </span>
+          <span className="flex-1 border-t border-dashed border-current opacity-20" />
+          <span
+            className={`text-[13px] font-bold tracking-[0.14em] ${dark ? "text-leaf-3" : "text-leaf"}`}
+          >
+            {kicker}
+          </span>
+        </div>
+      </Reveal>
+      <Reveal delay={90}>
+        <h2
+          className={`mt-5 font-display text-4xl leading-[1.15] sm:text-5xl ${
+            dark ? "text-moss" : "text-ink-900"
+          }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+      {desc && (
+        <Reveal delay={170}>
+          <p className={`mt-4 text-base leading-8 sm:text-lg sm:leading-9 ${dark ? "text-sage" : "text-ink-700/80"}`}>
+            {desc}
+          </p>
+        </Reveal>
+      )}
+    </div>
+  );
+}
+
+/** ستاره امتیاز */
+export function Stars({ value = 5, className = "text-amber" }: { value?: number; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-0.5 ${className}`} aria-label={`امتیاز ${value} از ۵`}>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5" fill={i < Math.round(value) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.6">
+          <path d="M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7L10 2.6z" strokeLinejoin="round" />
+        </svg>
+      ))}
     </span>
   );
 }
 
-/* ---------- section heading ---------- */
-export function SectionHead({
-  kicker,
-  title,
-  desc,
-  align = "start",
-}: {
-  kicker: string;
-  title: React.ReactNode;
-  desc?: string;
-  align?: "start" | "center";
-}) {
+/** برچسب کوچک */
+export function Chip({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
   return (
-    <Reveal className={align === "center" ? "text-center mx-auto max-w-2xl" : "max-w-2xl"}>
-      <p className="font-mono text-[13px] tracking-[0.25em] text-leaf-soft mb-4 flex items-center gap-3" dir="ltr">
-        <span className="inline-block w-8 h-px bg-leaf/60" style={{ order: align === "center" ? 0 : 1 }} />
-        <span style={{ order: 1 }}>{kicker}</span>
-        {align === "center" && <span className="inline-block w-8 h-px bg-leaf/60" />}
-      </p>
-      <h2 className="font-display text-4xl sm:text-5xl leading-[1.15] text-moss">{title}</h2>
-      {desc && <p className="mt-4 text-sage leading-8 text-[15.5px]">{desc}</p>}
-    </Reveal>
+    <span
+      className={`inline-flex items-center gap-1.5 border px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide ${
+        dark ? "border-inkline bg-ink-800/70 text-sage" : "border-line bg-paper-2 text-ink-700"
+      }`}
+    >
+      {children}
+    </span>
   );
 }

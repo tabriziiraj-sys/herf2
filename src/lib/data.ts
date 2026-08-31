@@ -1,415 +1,303 @@
-/* ---------- helpers ---------- */
-export const fa = (v: string | number): string =>
-  String(v)
-    .replace(/[0-9]/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d])
-    .replace(/,/g, "٬")
-    .replace(/\./g, "٫");
+/* ── داده‌های واقعی گردآوری‌شده از وب (مکتب‌خونه، حرفه‌ای‌شو، سیویلیکا، شبکه‌های اجتماعی) ── */
 
-export const price = (n: number): string => fa(n.toLocaleString("en-US"));
-
-export const LINKS = {
-  site: "https://herfeiish0.ir",
-  shop: "https://herfeiish0.ir/shop/",
-  king: "https://herfeiish0.ir/product/%D9%BE%DA%A9%DB%8C%D8%AC-king-%D9%87%D9%85%D9%87-%D8%AF%D9%88%D8%B1%D9%87-%D9%87%D8%A7/",
-  viz: "https://herfeiish0.ir/product/%D8%AF%D9%88%D8%B1%D9%87-%D8%A2%D9%85%D9%88%D8%B2%D8%B4%DB%8C-%D9%85%D8%B5%D9%88%D8%B1%D8%B3%D8%A7%D8%B2%DB%8C-%D8%AF%D8%A7%D8%AF%D9%87-%D9%87%D8%A7-%D8%AF%D8%A7%D8%B4%D8%A8%D9%88%D8%B1%D8%AF-%D9%87/",
-  instagram: "https://www.instagram.com/herfeiish0/",
-  telegram: "https://t.me/herfeish0",
-  eitaa: "https://eitaa.com/herfeiish0",
-  youtube: "https://www.youtube.com/playlist?list=PLAu43_uf7P19xDREkKt93zdp59DMSdLuk",
-  maktab: "https://maktabkhooneh.org/teacher/iraj-chaei-asl-tabrizi/",
-  support: "https://eitaa.com/herfeiish0",
+export const faNum = (n: number | string, dec = 0): string => {
+  const num = typeof n === "string" ? parseFloat(n) : n;
+  const fixed = num.toFixed(dec);
+  const [int, frac] = fixed.split(".");
+  const grouped = int.replace(/\B(?=(\d{3})+(?!\d))/g, "٬");
+  const s = frac ? `${grouped}٫${frac}` : grouped;
+  return s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
 };
 
-/* ---------- marquee ---------- */
-export const tickerItems = [
-  "Excel",
-  "VBA",
-  "Power BI",
-  "داشبورد مدیریتی",
-  "مصورسازی داده",
-  "هوش مصنوعی",
-  "n8n",
-  "گزارش‌سازی",
-  "فرمول‌نویسی",
-  "اتوماسیون",
-  "نرم‌افزار تحت اکسل",
-  "Pivot Table",
+export const profile = {
+  name: "ایرج چائی اصل تبریزی",
+  brand: "حرفه‌ای شو",
+  tagline: "مدرس اکسل، Power BI و هوش مصنوعی",
+  degree: "کارشناسی ارشد عمران — پژوهشکده ساختمان و مسکن وزارت مسکن و شهرسازی",
+  bio: [
+    "ایرج چائی اصل تبریزی، فارغ‌التحصیل کارشناسی ارشد عمران از پژوهشکده ساختمان و مسکن وزارت مسکن و شهرسازی است. ایشان حدود ۱۰ سال است که در حوزه طراحی نرم‌افزارها، داشبوردهای مدیریتی، مصورسازی اطلاعات و غیره در بستر اکسل و زبان برنامه‌نویسی VBA فعالیت می‌کند.",
+    "ایشان سابقه طراحی نرم‌افزار در زمینه‌های مدیریت و کنترل پروژه (PMO)، حقوق و دستمزد، انبارداری، سیستم ثبت هزینه‌ها و درآمدها، سود و زیان و غیره را داشته و اکنون با برند «حرفه‌ای شو» یکی از جامع‌ترین مسیرهای آموزش اکسل به زبان فارسی را از صفرِ صفر تا کسب درآمد میلیونی هدایت می‌کند.",
+  ],
+};
+
+export const stats = [
+  { value: 10, suffix: "+", label: "سال تجربه تخصصی", cell: "A1" },
+  { value: 18761, suffix: "", label: "دانشجوی مکتب‌خونه", cell: "B1" },
+  { value: 13000, suffix: "+", label: "دانشجوی موفق وب‌سایت", cell: "C1" },
+  { value: 102, suffix: "", label: "ساعت ویدیو در پکیج کینگ", cell: "D1" },
+  { value: 66, suffix: "", label: "ساعت محتوای مکتب‌خونه", cell: "E1" },
+  { value: 100, suffix: "+", label: "شرکت با پرسنل همراه", cell: "F1" },
+  { value: 4.6, suffix: "", label: "امتیاز دانشجویان (از ۵)", dec: 1, cell: "G1" },
+  { value: 6, suffix: "", label: "دوره فعال آموزشی", cell: "H1" },
 ];
 
-/* ---------- stats ---------- */
-export const heroStats = [
-  { value: 15900, suffix: "+", label: "دانشجو در مکتب‌خونه" },
-  { value: 102, suffix: "+", label: "ساعت ویدیوی پروژه‌محور" },
-  { value: 4.7, suffix: "", decimals: 1, label: "میانگین امتیاز دانشجویان" },
-];
-
-export const aboutStats = [
-  { value: 10, suffix: "+", label: "سال تجربه اجرایی" },
-  { value: 15900, suffix: "+", label: "دانشجوی فعال" },
-  { value: 120, suffix: "+", label: "جلسه آموزشی" },
-  { value: 4, suffix: "", label: "دوره در مکتب‌خونه" },
-];
-
-/* ---------- timeline ---------- */
 export const timeline = [
   {
-    year: "تحصیلات",
-    title: "کارشناسی ارشد مهندسی عمران",
-    text: "فارغ‌التحصیل از پژوهشکده ساختمان و مسکن وزارت مسکن و شهرسازی",
-    icon: "cert",
+    cell: "A2",
+    title: "کارشناسی ارشد عمران",
+    text: "فارغ‌التحصیل از پژوهشکده ساختمان و مسکن وزارت مسکن و شهرسازی؛ پایه‌ای مهندسی برای نگاه تحلیلی به داده.",
   },
   {
-    year: "آغاز مسیر",
-    title: "ورود به دنیای داده و اکسل",
-    text: "شروع فعالیت حرفه‌ای در حوزه طراحی داشبوردهای مدیریتی و گزارش‌سازی",
-    icon: "cell",
+    cell: "A3",
+    title: "پژوهش‌های لرزه‌خیزی",
+    text: "نگارش مقالات علمی در تحلیل احتمالاتی خطر لرزه‌ای و لرزه‌زمین‌ساخت؛ ثبت‌شده در سیویلیکا و شبکه‌های علمی کشور.",
   },
   {
-    year: "تخصص",
-    title: "+۱۰ سال طراحی نرم‌افزار تحت اکسل",
-    text: "توسعه نرم‌افزارها و داشبوردهای مدیریتی با اکسل و زبان برنامه‌نویسی VBA",
-    icon: "code",
+    cell: "A4",
+    title: "ورود به دنیای اکسل و VBA",
+    text: "آغاز حدود ۱۰ سال فعالیت مستمر در طراحی نرم‌افزار، داشبورد مدیریتی و مصورسازی اطلاعات در بستر اکسل.",
   },
   {
-    year: "برند",
+    cell: "A5",
+    title: "نرم‌افزارهای سازمانی",
+    text: "طراحی سیستم‌های PMO، حقوق و دستمزد، انبارداری، ثبت هزینه‌ها و درآمدها و سود و زیان برای کسب‌وکارها.",
+  },
+  {
+    cell: "A6",
+    title: "تدریس در مکتب‌خونه",
+    text: "انتشار دوره‌های پرمخاطب اکسل و مصورسازی داده؛ بیش از ۱۸ هزار دانشجو و امتیاز ۴٫۶ از ۵.",
+  },
+  {
+    cell: "A7",
     title: "تأسیس «حرفه‌ای شو»",
-    text: "راه‌اندازی herfeiish0.ir برای آموزش اکسل حرفه‌ای و ساخت نرم‌افزار تحت اکسل",
-    icon: "spark",
+    text: "راه‌اندازی herfeiish0.ir و تربیت بیش از ۱۳ هزار دانشجوی موفق؛ پرسنل بیش از ۱۰۰ شرکت نام‌آشنا همراه شدند.",
   },
   {
-    year: "تدریس",
-    title: "مدرس رسمی مکتب‌خونه",
-    text: "تدریس دوره‌های اکسل، مصورسازی داده و Power BI برای هزاران دانشجو",
-    icon: "play",
-  },
-  {
-    year: "امروز",
-    title: "اکسل + هوش مصنوعی + n8n",
-    text: "آموزش صفر تا ۱۰۰۰ اکسل، Power BI، هوش مصنوعی و اتوماسیون با n8n",
-    icon: "bot",
+    cell: "A8",
+    title: "هوش مصنوعی و اتوماسیون",
+    text: "توسعه آموزش‌های Power BI با هوش مصنوعی، اکسل هوشمند با VBA و خودکارسازی فرایندها با n8n.",
   },
 ];
 
-/* ---------- skills bento ---------- */
-export type Skill = {
-  icon: string;
-  title: string;
-  text: string;
-  chips: string[];
-  span: string;
-  accent?: "leaf" | "amber" | "sky";
-  visual?: "dash";
-};
-
-export const skills: Skill[] = [
-  {
-    icon: "dash",
-    title: "داشبوردسازی مدیریتی",
-    text: "طراحی داشبوردهای تعاملی و مدیریتی که داده‌های خام را به تصمیم‌های روشن تبدیل می‌کنند؛ دو برابر سریع‌تر از روش‌های معمولی.",
-    chips: ["KPI", "اسلایسر", "تعاملی"],
-    span: "md:col-span-4",
-    accent: "leaf",
-    visual: "dash",
-  },
-  {
-    icon: "code",
-    title: "برنامه‌نویسی VBA",
-    text: "آموزش جامع و تخصصی، کاملاً پروژه‌محور؛ از ماکرو تا ساخت نرم‌افزار کامل.",
-    chips: ["ماکرو", "UserForm", "اتوماسیون"],
-    span: "md:col-span-2",
-    accent: "amber",
-  },
-  {
-    icon: "chart",
-    title: "مصورسازی داده‌ها",
-    text: "نمایش حرفه‌ای داده‌ها حتی بدون نمودارهای آماده؛ ترسیم نمودارهای عمومی و خاص.",
-    chips: ["نمودار", "اینفوگرافیک"],
-    span: "md:col-span-2",
-    accent: "sky",
-  },
-  {
-    icon: "funnel",
-    title: "Power BI",
-    text: "یادگیری دوبرابر سریع‌تر با کمک هوش مصنوعی؛ از اتصال داده تا انتشار داشبورد.",
-    chips: ["DAX", "Power Query"],
-    span: "md:col-span-2",
-    accent: "amber",
-  },
-  {
-    icon: "bot",
-    title: "اکسل هوشمند با AI",
-    text: "فرمول‌نویسی، کدنویسی VBA و گزارش‌سازی با کمک هوش مصنوعی و اتوماسیون n8n.",
-    chips: ["Copilot", "n8n", "گزارش‌سازی"],
-    span: "md:col-span-2",
-    accent: "leaf",
-  },
-  {
-    icon: "lock",
-    title: "نرم‌افزار تحت اکسل",
-    text: "قفل‌گذاری پیشرفته، فرم‌ها، دکمه‌ها و امکانات حرفه‌ای که اکسل را به نرم‌افزار تبدیل می‌کند.",
-    chips: ["فرم", "دکمه", "امنیت"],
-    span: "md:col-span-6 lg:col-span-6 md:!col-span-2",
-    accent: "sky",
-  },
-];
-
-/* ---------- maktabkhooneh courses ---------- */
-export type Course = {
-  title: string;
-  desc: string;
-  url: string;
-  students: number;
-  rating: number;
-  votes: number;
-  sessions?: string;
-  hours?: string;
-  price: number;
-  oldPrice?: number;
-  badge?: string;
-  cert: boolean;
-  features: string[];
-};
-
-export const courses: Course[] = [
-  {
-    title: "آموزش اکسل از صفر",
-    desc: "شروع از نقطه صفر؛ همه چیزی که برای ورود قدرتمند به دنیای اکسل لازم دارید.",
-    url: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%DA%A9%D8%B3%D9%84-%D8%B5%D9%81%D8%B1-mk3323/",
-    students: 2132,
-    rating: 4.7,
-    votes: 180,
-    price: 1999000,
-    badge: "محبوب کاربران",
-    cert: true,
-    features: ["مناسب مبتدی مطلق", "گواهی‌نامه پایان دوره", "تمرین‌های کاربردی"],
-  },
-  {
-    title: "مصورسازی داده‌ها با اکسل",
-    desc: "پرمخاطب‌ترین دوره؛ ۸۲ جلسه آموزش ساخت داشبوردهای حرفه‌ای و نمودارهای خاص.",
-    url: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%85%D8%B5%D9%88%D8%B1%D8%B3%D8%A7%D8%B2%DB%8C-%D8%AF%D8%A7%D8%AF%D9%87-%D8%A7%DA%A9%D8%B3%D9%84-mk1641/",
-    students: 9553,
-    rating: 4.6,
-    votes: 275,
-    sessions: "۸۲ جلسه",
-    hours: "۱۱ ساعت",
-    price: 486850,
-    oldPrice: 749000,
-    badge: "۳۵٪ تخفیف",
-    cert: true,
-    features: ["داشبورد بدون نمودار آماده", "نمودارهای عمومی و خاص", "پروژه واقعی"],
-  },
-  {
-    title: "اکسل هوشمند با هوش مصنوعی",
-    desc: "فرمول‌نویسی، کدنویسی VBA و گزارش‌سازی در اکسل با کمک هوش مصنوعی.",
-    url: "https://maktabkhooneh.org/learn/excel-programming/",
-    students: 4239,
-    rating: 4.4,
-    votes: 96,
-    sessions: "۱۹ جلسه",
-    hours: "۵ ساعت",
-    price: 699000,
-    cert: true,
-    features: ["فرمول‌نویسی با AI", "کدنویسی VBA", "گزارش‌سازی خودکار"],
-  },
-  {
-    title: "Power BI دوبرابر سریع‌تر با AI",
-    desc: "یادگیری صفر تا صد پاور بی آی و ساخت داشبورد، با سرعتی دوبرابر به کمک هوش مصنوعی.",
-    url: "https://maktabkhooneh.org/course/%DB%8C%D8%A7%D8%AF%DA%AF%DB%8C%D8%B1%DB%8C-%D8%AF%D9%88%D8%A8%D8%B1%D8%A7%D8%A8%D8%B1-%D8%B3%D8%B1%DB%8C%D8%B9%D8%AA%D8%B1-power-bi-%D9%87%D9%88%D8%B4-%D9%85%D8%B5%D9%86%D9%88%D8%B9%DB%8C-mk12016/",
-    students: 541,
-    rating: 5,
-    votes: 6,
-    sessions: "۲۲ جلسه",
-    hours: "۵ ساعت",
-    price: 149000,
-    oldPrice: 134100,
-    cert: false,
-    features: ["با کمک هوش مصنوعی", "داشبورد تعاملی", "زیرنویس دوره"],
-  },
-];
-
-/* ---------- products (herfeiish0.ir) ---------- */
-export type Product = {
-  id: string;
-  title: string;
-  tag: string;
-  desc: string;
-  price: number;
-  students: string;
-  url: string;
-  features: string[];
-  featured?: boolean;
-  accent: "amber" | "leaf" | "sky";
-  hours?: string;
-};
-
-export const products: Product[] = [
+export const packages = [
   {
     id: "king",
-    title: "پکیج King",
-    tag: "اکسل صفر تا ۱۰۰۰ برای کسب درآمد",
-    desc: "جامع‌ترین پکیج آموزش اکسل به زبان فارسی؛ مسیری کامل از اولین فرمول تا ساخت نرم‌افزار تحت اکسل و کسب درآمد میلیونی.",
+    name: "پکیج King",
+    subtitle: "اکسل صفر تا ۱۰۰۰ برای کسب درآمد",
+    desc: "جامع‌ترین پکیج آموزش اکسل به زبان فارسی؛ ۱۰۲ ساعت ویدیوی آموزشی پروژه‌محور از صفرِ صفر تا طراحی نرم‌افزار تحت اکسل و درآمد میلیونی.",
     price: 11082500,
-    students: "+۴٬۰۰۰ دانشجو",
-    url: LINKS.king,
-    hours: "۱۰۲ ساعت",
+    students: "۴۰۰۰+",
+    badge: "پرفروش‌ترین",
     featured: true,
-    accent: "amber",
-    features: [
-      "۱۰۲ ساعت ویدیوی آموزشی پروژه‌محور",
-      "آموزش صفر تا صد اکسل + فرمول‌نویسی پیشرفته",
-      "داشبوردسازی و مصورسازی داده‌ها",
-      "برنامه‌نویسی VBA و ساخت نرم‌افزار تحت اکسل",
-      "Power BI و هوش مصنوعی و n8n",
-      "پشتیبانی و همراهی تا کسب درآمد",
+    hours: "۱۰۲ ساعت",
+    includes: [
+      "آموزش اکسل از صفر تا پیشرفته",
+      "فرمول‌ها و توابع کاربردی",
+      "برنامه‌نویسی VBA و ماکرو",
+      "داشبوردسازی و مصورسازی داده",
+      "طراحی نرم‌افزار تحت اکسل",
+      "مسیر کسب درآمد از اکسل",
+      "Power BI و هوش مصنوعی",
+      "آپدیت‌های دائمی و پشتیبانی",
     ],
+    link: "https://herfeiish0.ir/product/%D9%BE%DA%A9%DB%8C%D8%AC-king-%D9%87%D9%85%D9%87-%D8%AF%D9%88%D8%B1%D9%87-%D9%87%D8%A7/",
+    cta: "مشاهده پکیج King",
   },
   {
     id: "pbi",
-    title: "آموزش جامع Power BI + اکسل کاربردی",
-    tag: "داشبورد دوبرابر سریع‌تر",
-    desc: "ترکیب قدرت پاور بی آی و اکسل برای ساخت داشبوردهای سازمانی حرفه‌ای.",
+    name: "آموزش جامع Power BI + اکسل کاربردی",
+    subtitle: "از داده خام تا داشبورد تصمیم‌گیری",
+    desc: "تسلط بر مصورسازی حرفه‌ای داده، مدل‌سازی و گزارش‌سازی تعاملی در Power BI در کنار اکسل کاربردی روزمره.",
     price: 8498000,
-    students: "+۱۰۰ دانشجو",
-    url: LINKS.shop,
-    accent: "sky",
-    features: ["صفر تا صد Power BI", "اکسل کاربردی", "پروژه‌های واقعی"],
+    students: "۱۰۰+",
+    badge: "تخصصی",
+    featured: false,
+    hours: "پروژه‌محور",
+    includes: [
+      "Power Query و پاک‌سازی داده",
+      "مدل‌سازی و DAX",
+      "داشبوردهای تعاملی مدیریتی",
+      "اتصال اکسل و Power BI",
+    ],
+    link: "https://herfeiish0.ir/shop/",
+    cta: "مشاهده در فروشگاه",
   },
   {
-    id: "vba",
-    title: "پکیج جامع و تخصصی VBA",
-    tag: "آموزش پروژه‌محور",
-    desc: "از ماکروهای ساده تا ساخت نرم‌افزار کامل با فرم، دکمه و قفل پیشرفته.",
-    price: 4025000,
-    students: "پروژه‌محور",
-    url: LINKS.shop,
-    accent: "amber",
-    features: ["پروژه‌های متنوع", "فرم و دکمه و اتوماسیون", "قفل‌گذاری پیشرفته"],
-  },
-  {
-    id: "viz",
-    title: "مصورسازی داده‌ها و داشبوردهای حرفه‌ای",
-    tag: "پرمخاطب‌ترین دوره",
-    desc: "مصورسازی داده بدون نمودارهای آماده، ترسیم نمودار عمومی و ساخت داشبورد حرفه‌ای.",
-    price: 749000,
-    students: "+۹٬۵۰۰ دانشجو",
-    url: LINKS.viz,
-    accent: "leaf",
-    features: ["مصورسازی بدون نمودار", "نمودار عمومی", "داشبورد حرفه‌ای"],
+    id: "custom",
+    name: "طراحی نرم‌افزار تحت اکسل",
+    subtitle: "سفارش اختصاصی برای سازمان شما",
+    desc: "طراحی و پیاده‌سازی نرم‌افزارهای مدیریت و کنترل پروژه (PMO)، حقوق و دستمزد، انبارداری، هزینه‌ها و درآمدها و سود و زیان با VBA و داشبورد مدیریتی.",
+    price: 0,
+    students: "۱۰+ سال سابقه",
+    badge: "سفارشی",
+    featured: false,
+    hours: "قراردادی",
+    includes: [
+      "تحلیل نیاز و فرایند سازمان",
+      "طراحی سیستم با Excel و VBA",
+      "داشبورد مدیریتی و گزارش‌ساز",
+      "استقرار، آموزش و پشتیبانی",
+    ],
+    link: "https://herfeiish0.ir/",
+    cta: "ثبت درخواست",
   },
 ];
 
-/* ---------- income path ---------- */
-export const pathSteps = [
+export const courses = [
   {
-    n: "۰۱",
-    title: "از صفر شروع کن",
-    text: "مفاهیم پایه، محیط اکسل و اولین فرمول‌ها؛ بدون هیچ پیش‌نیازی.",
+    name: "دوره آموزش مصورسازی داده‌ها با اکسل",
+    level: "مقدماتی تا پیشرفته",
+    students: 9553,
+    rating: 4.6,
+    votes: 278,
+    price: 486850,
+    oldPrice: 749000,
+    off: "۳۵٪",
+    tag: "",
+    link: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%85%D8%B5%D9%88%D8%B1%D8%B3%D8%A7%D8%B2%DB%8C-%D8%AF%D8%A7%D8%AF%D9%87-%D8%A7%DA%A9%D8%B3%D9%84-mk1641/",
   },
   {
-    n: "۰۲",
-    title: "فرمول‌نویسی و توابع کاربردی",
-    text: "توابع جستجو، شرطی و آرایه‌ای که قلب هر گزارش حرفه‌ای هستند.",
+    name: "یادگیری دوبرابر سریع‌تر Power BI با هوش مصنوعی",
+    level: "مقدماتی تا پیشرفته",
+    students: 3247,
+    rating: 4.7,
+    votes: 224,
+    price: 2249500,
+    oldPrice: 4499000,
+    off: "۵۰٪",
+    tag: "محبوب کاربران",
+    link: "https://maktabkhooneh.org/course/%DB%8C%D8%A7%D8%AF%DA%AF%DB%8C%D8%B1%DB%8C-%D8%AF%D9%88%D8%A8%D8%B1%D8%A7%D8%A8%D8%B1-%D8%B3%D8%B1%DB%8C%D8%B9%D8%AA%D8%B1-power-bi-%D9%87%D9%88%D8%B4-%D9%85%D8%B5%D9%86%D9%88%D8%B9%DB%8C-mk12016/",
   },
   {
-    n: "۰۳",
-    title: "داشبورد و مصورسازی داده",
-    text: "تبدیل داده‌های خام به داشبوردهای مدیریتی چشم‌نواز و تعاملی.",
+    name: "اکسل هوشمند: فرمول‌نویسی، VBA و گزارش‌سازی با هوش مصنوعی",
+    level: "متوسط",
+    students: 4248,
+    rating: 4.4,
+    votes: 104,
+    price: 419400,
+    oldPrice: 699000,
+    off: "۴۰٪",
+    tag: "",
+    link: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%81%D8%B1%D9%85%D9%88%D9%84-%DA%A9%D8%AF-vba-%DA%AF%D8%B2%D8%A7%D8%B1%D8%B4-%D9%86%D9%88%DB%8C%D8%B3%DB%8C-%D8%A7%DA%A9%D8%B3%D9%84-%D9%87%D9%88%D8%B4-%D9%85%D8%B5%D9%86%D9%88%D8%B9%DB%8C-mk11151/",
   },
   {
-    n: "۰۴",
-    title: "VBA و نرم‌افزار تحت اکسل",
-    text: "اتوماسیون، فرم‌ها و قفل‌گذاری؛ اکسل دیگر فقط یک صفحه‌گسترده نیست.",
+    name: "آموزش اکسل از صفر",
+    level: "مقدماتی",
+    students: 3807,
+    rating: 4.7,
+    votes: 260,
+    price: 551850,
+    oldPrice: 849000,
+    off: "۳۵٪",
+    tag: "",
+    link: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%DA%A9%D8%B3%D9%84-%D8%A7%D8%B2-%D8%B5%D9%81%D8%B1-mk3323/",
   },
   {
-    n: "۰۵",
-    title: "Power BI و هوش مصنوعی",
-    text: "گزارش‌های سازمانی با Power BI و شتاب‌گرفتن با AI و n8n.",
+    name: "آموزش فرمول‌ها و توابع کاربردی اکسل",
+    level: "متوسط تا پیشرفته",
+    students: 2133,
+    rating: 4.7,
+    votes: 180,
+    price: 799600,
+    oldPrice: 1999000,
+    off: "۶۰٪",
+    tag: "محبوب کاربران",
+    link: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%81%D8%B1%D9%85%D9%88%D9%84-%D8%AA%D9%88%D8%A7%D8%A8%D8%B9-%D9%BE%DB%8C%D8%B4%D8%B1%D9%81%D8%AA%D9%87-%D8%A7%DA%A9%D8%B3%D9%84-mk2121/",
   },
   {
-    n: "۰۶",
-    title: "کسب درآمد میلیونی",
-    text: "پروژه‌گیری، استخدام، فروش داشبورد و نرم‌افزار تحت اکسل.",
-  },
-];
-
-/* ---------- testimonials ---------- */
-export const testimonials = [
-  {
-    name: "مریم — حسابدار",
-    role: "دوره مصورسازی داده‌ها",
-    text: "داشبوردی که برای شرکتمون ساختم باعث شد گزارش ماهانه از ۳ روز به ۲ ساعت برسه. تدریس مهندس تبریزی کاملاً پروژه‌محوره.",
-    rot: "-rotate-2",
-    off: "md:translate-y-4",
-  },
-  {
-    name: "امیر — کارشناس فروش",
-    role: "پکیج King",
-    text: "از صفرِ صفر شروع کردم؛ الان پروژه داشبورد می‌گیرم. پشتیبانی واقعاً پای کاره و هر سوالی داشتم جواب گرفتم.",
-    rot: "rotate-1",
-    off: "md:-translate-y-2",
-  },
-  {
-    name: "نگار — دانشجوی مدیریت",
-    role: "اکسل از صفر (مکتب‌خونه)",
-    text: "بیان ساده و مثال‌های واقعی. اولین‌بار بود که فرمول‌های اکسل رو واقعاً فهمیدم، نه حفظ کردم.",
-    rot: "-rotate-1",
-    off: "md:translate-y-8",
-  },
-  {
-    name: "کاوه — کارشناس کنترل پروژه",
-    role: "پکیج VBA",
-    text: "با VBA یک نرم‌افزار ثبت گزارش روزانه ساختیم که کل تیم ازش استفاده می‌کنه. دوره کاملاً پروژه‌محوره.",
-    rot: "rotate-2",
-    off: "md:translate-y-0",
-  },
-  {
-    name: "سحر — تحلیلگر داده",
-    role: "Power BI",
-    text: "تکنیک‌های هوش مصنوعی که یاد داد سرعت یادگیریم رو واقعاً دو برابر کرد. داشبوردهام الان سطح دیگری دارند.",
-    rot: "-rotate-2",
-    off: "md:translate-y-6",
-  },
-];
-
-/* ---------- FAQ ---------- */
-export const faqs = [
-  {
-    q: "آیا برای شروع دوره‌ها نیاز به پیش‌نیاز دارم؟",
-    a: "خیر. دوره «آموزش اکسل از صفر» و پکیج King از نقطه صفر مطلق شروع می‌شوند و فقط به یک کامپیوتر و علاقه نیاز دارید. بقیه دوره‌ها نیز قدم‌به‌قدم شما را همراهی می‌کنند.",
-  },
-  {
-    q: "تفاوت پکیج King با دوره‌های مکتب‌خونه چیست؟",
-    a: "دوره‌های مکتب‌خونه مهارت‌محور و همراه با گواهی‌نامه رسمی هستند. پکیج King یک مسیر کامل ۱۰۲ ساعته با هدف کسب درآمد است؛ از صفر تا ساخت نرم‌افزار تحت اکسل، همراه با پشتیبانی مستقیم مجموعه حرفه‌ای شو.",
-  },
-  {
-    q: "پشتیبانی دوره‌ها چطور انجام می‌شود؟",
-    a: "از طریق آی‌دی پشتیبانی @Herfeiish0_support و کانال‌های تلگرام، ایتا و اینستاگرام. تعهد ما فقط آموزش نیست؛ همراهی شما تا رسیدن به نتیجه است.",
-  },
-  {
-    q: "آیا دوره‌ها گواهی‌نامه دارند؟",
-    a: "بله؛ دوره‌های مکتب‌خونه دارای گواهی‌نامه رسمی پایان دوره هستند که در رزومه شما قابل استناد است.",
-  },
-  {
-    q: "واقعاً می‌شود از اکسل درآمد میلیونی داشت؟",
-    a: "بله؛ طراحی داشبورد برای شرکت‌ها، اتوماسیون گزارش‌های حسابداری و فروش، ساخت نرم‌افزار تحت اکسل و تحلیل داده از پرتقاضاترین مهارت‌های بازار کار امروز هستند. در پکیج King مسیر کسب درآمد قدم‌به‌قدم آموزش داده می‌شود.",
+    name: "آموزش مقدماتی گوگل شیت (Google Sheets)",
+    level: "مقدماتی",
+    students: 552,
+    rating: 4.4,
+    votes: 30,
+    price: 449700,
+    oldPrice: 1499000,
+    off: "۷۰٪",
+    tag: "",
+    link: "https://maktabkhooneh.org/course/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%85%D9%82%D8%AF%D9%85%D8%A7%D8%AA%DB%8C-%DA%AF%D9%88%DA%AF%D9%84-%D8%B4%DB%8C%D8%AA-google-sheets-mk10236/",
   },
 ];
 
-/* ---------- socials ---------- */
+export const software = [
+  {
+    icon: "pmo",
+    title: "مدیریت و کنترل پروژه (PMO)",
+    text: "سیستم جامع پایش پیشرفت، منابع و گزارش‌های دوره‌ای پروژه با داشبورد مدیریتی زنده.",
+    chips: ["Excel", "VBA", "Dashboard"],
+  },
+  {
+    icon: "wage",
+    title: "حقوق و دستمزد",
+    text: "محاسبه خودکار کارکرد، اضافه‌کار، کسورات و فیش حقوقی با خروجی آماده برای حسابداری.",
+    chips: ["Excel", "VBA", "گزارش‌ساز"],
+  },
+  {
+    icon: "box",
+    title: "انبارداری",
+    text: "ثبت ورود و خروج کالا، نقطه سفارش، ریالی کردن موجودی و گزارش گردش انبار.",
+    chips: ["Excel", "Power Query"],
+  },
+  {
+    icon: "coin",
+    title: "هزینه‌ها، درآمدها و سود و زیان",
+    text: "ثبت روزانه تراکنش‌ها، دسته‌بندی خودکار و صورت سود و زیان ماهانه در یک نگاه.",
+    chips: ["Excel", "Dashboard"],
+  },
+  {
+    icon: "gauge",
+    title: "داشبوردهای مدیریتی",
+    text: "مصورسازی اطلاعات کلیدی کسب‌وکار با نمودارهای تعاملی و به‌روزرسانی خودکار.",
+    chips: ["Excel", "Power BI"],
+  },
+  {
+    icon: "chart",
+    title: "مصورسازی داده",
+    text: "تبدیل داده‌های خام به نمودارها و اینفوگرافیک‌های گویا برای تصمیم‌گیری سریع‌تر.",
+    chips: ["Charts", "Pivot", "Slicer"],
+  },
+];
+
+export const papers = [
+  {
+    title: "تحلیل احتمالاتی خطر لرزه‌ای شهرستان مراغه واقع در استان آذربایجان شرقی",
+    meta: "هفتمین کنفرانس بین‌المللی مدیریت جامع بحران — ۱۳۹۴",
+    authors: "علی بیت‌اللهی، ایرج چائی اصل تبریزی، مینا باقری ملاحاجلو",
+    link: "https://elmnet.ir/article/20459407-32152/",
+  },
+  {
+    title: "بررسی لرزه‌زمین‌ساخت و لرزه‌خیزی شهرستان مهدی‌شهر واقع در استان سمنان",
+    meta: "جنوب رشته‌کوه‌های البرز — مقاله کنفرانسی",
+    authors: "ایرج چائی اصل تبریزی، کیوان فاتحی‌منش، مینا باقری ملاحاجلو",
+    link: "https://civilica.com/search/paper/n-%D8%A7%DB%8C%D8%B1%D8%AC%20%DA%86%D8%A7%D8%A6%DB%8C%20%D8%A7%D8%B5%D9%84%20%D8%AA%D8%A8%D8%B1%DB%8C%D8%B2%DB%8C/",
+  },
+];
+
 export const socials = [
-  { name: "اینستاگرام", handle: "herfeiish0@", url: LINKS.instagram, icon: "instagram", accent: "text-amber-soft" },
-  { name: "تلگرام", handle: "herfeish0@", url: LINKS.telegram, icon: "telegram", accent: "text-skyx" },
-  { name: "ایتا", handle: "herfeiish0@", url: LINKS.eitaa, icon: "eitaa", accent: "text-leaf-soft" },
-  { name: "یوتیوب", handle: "آموزش فرمول‌ها و داشبورد", url: LINKS.youtube, icon: "youtube", accent: "text-amber-soft" },
-  { name: "مکتب‌خونه", handle: "پروفایل مدرس", url: LINKS.maktab, icon: "cap", accent: "text-leaf-soft" },
-  { name: "وب‌سایت", handle: "herfeiish0.ir", url: LINKS.site, icon: "globe", accent: "text-skyx" },
+  { id: "web", label: "وب‌سایت حرفه‌ای شو", handle: "herfeiish0.ir", link: "https://herfeiish0.ir/" },
+  { id: "instagram", label: "اینستاگرام", handle: "@herfeiish0", link: "https://www.instagram.com/herfeiish0/" },
+  { id: "telegram", label: "تلگرام", handle: "@herfeish0", link: "https://t.me/herfeish0" },
+  { id: "eitaa", label: "ایتا", handle: "herfeiish0", link: "https://eitaa.com/herfeiish0" },
+  { id: "youtube", label: "یوتیوب", handle: "آموزش فرمول‌ها و مصورسازی", link: "https://www.youtube.com/playlist?list=PLAu43_uf7P19xDREkKt93zdp59DMSdLuk" },
+  { id: "maktab", label: "مکتب‌خونه", handle: "۶ دوره · ۱۸٬۷۶۱ دانشجو", link: "https://maktabkhooneh.org/teacher/iraj-chaei-asl-tabrizi/" },
+];
+
+export const marqueeItems = [
+  "فرمول‌نویسی اکسل",
+  "برنامه‌نویسی VBA",
+  "Power BI",
+  "داشبورد مدیریتی",
+  "مصورسازی داده",
+  "گوگل شیت",
+  "هوش مصنوعی",
+  "اتوماسیون n8n",
+  "کنترل پروژه PMO",
+  "حقوق و دستمزد",
+  "انبارداری",
+  "سود و زیان",
+];
+
+export const formulas = [
+  "=حرفه‌ای‌شو(ایرج؛ اکسل؛ Power BI؛ AI)",
+  "=SUM(تجربه۱۰ساله + مهارت + آموزش)",
+  "=VLOOKUP(«ایرج»، دنیای_اکسل، ۲، ۰)",
 ];
 
 export const navLinks = [
-  { label: "درباره من", href: "#about" },
-  { label: "تخصص‌ها", href: "#skills" },
-  { label: "دوره‌ها", href: "#courses" },
-  { label: "پکیج‌ها", href: "#products" },
-  { label: "مسیر درآمد", href: "#path" },
-  { label: "سوالات", href: "#faq" },
+  { id: "home", label: "خانه" },
+  { id: "about", label: "درباره من" },
+  { id: "packages", label: "پکیج‌ها" },
+  { id: "courses", label: "دوره‌ها" },
+  { id: "software", label: "نرم‌افزارها" },
+  { id: "research", label: "پژوهش" },
+  { id: "contact", label: "ارتباط" },
 ];
